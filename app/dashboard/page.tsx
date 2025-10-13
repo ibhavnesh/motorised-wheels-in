@@ -431,17 +431,17 @@ export default function DashboardPage() {
                       >
                         <Button
                           variant="outline"
-                          className={`w-full h-20 flex-col bg-transparent border-border/50 ${
+                          className={`w-full h-24 flex-col bg-transparent border-border/50 py-4 px-6 ${
                             selectedAction === action.key
                               ? "ring-2 ring-orange-500/50 bg-gradient-to-r from-orange-500/10 to-red-500/10"
                               : "hover:bg-gradient-to-r hover:from-orange-500/10 hover:to-red-500/10"
                           }`}
                           onClick={() => setSelectedAction(action.key)}
                         >
-                          <div className={`p-2 rounded-lg bg-gradient-to-r ${action.color} mb-2`}>
+                          <div className={`p-2 rounded-lg bg-gradient-to-r ${action.color} mb-3`}>
                             <action.icon className="h-6 w-6 text-white" />
                           </div>
-                          <div className="text-center">
+                          <div className="text-center space-y-1">
                             <div className="font-semibold">{action.title}</div>
                             <div className="text-xs text-muted-foreground">{action.description}</div>
                           </div>
@@ -476,7 +476,7 @@ export default function DashboardPage() {
                     }}
                   />
                 </CardContent>
-              </Card>
+              </Card>   
             )}
 
             {selectedAction === "history" && (
