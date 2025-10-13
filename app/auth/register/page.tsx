@@ -19,19 +19,56 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
+  const [errors, setErrors] = useState<{ 
+    name?: string; 
+    email?: string; 
+    password?: string; 
+    confirmPassword?: string 
+  }>({})
   const { register, isLoading } = useAuth()
   const router = useRouter()
   const { toast } = useToast()
 
+  const validateForm = () => {
+    const newErrors: { 
+      name?: string; 
+      email?: string; 
+      password?: string; 
+      confirmPassword?: string 
+    } = {}
+    
+    if (!name.trim()) {
+      newErrors.name = "Full name is required"
+    } else if (name.trim().length < 2) {
+      newErrors.name = "Name must be at least 2 characters"
+    }
+    
+    if (!email) {
+      newErrors.email = "Email is required"
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Please enter a valid email"
+    }
+    
+    if (!password) {
+      newErrors.password = "Password is required"
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters"
+    }
+    
+    if (!confirmPassword) {
+      newErrors.confirmPassword = "Please confirm your password"
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match"
+    }
+    
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (password !== confirmPassword) {
-      toast({
-        title: "Password mismatch",
-        description: "Passwords do not match. Please try again.",
-        variant: "destructive",
-      })
+    if (!validateForm()) {
       return
     }
 
@@ -107,7 +144,8 @@ export default function RegisterPage() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.5 }}
               >
-                <label htmlFor="name" className="block text-sm font-medium mb-2">
+                <label htmlFor="name" className="block text-sm font-medium mb-2 flex items-center">
+                  <span className="text-orange-500 mr-2">👤</span>
                   Full Name
                 </label>
                 <Input
@@ -115,10 +153,26 @@ export default function RegisterPage() {
                   type="text"
                   required
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => {
+                    setName(e.target.value)
+                    if (errors.name) {
+                      setErrors({ ...errors, name: undefined })
+                    }
+                  }}
                   placeholder="Enter your full name"
-                  className="focus:border-orange-500 focus:ring-orange-500"
+                  className={`focus:border-orange-500 focus:ring-orange-500 transition-all duration-200 ${
+                    errors.name ? "border-red-500" : ""
+                  }`}
                 />
+                {errors.name && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-500 text-xs mt-1"
+                  >
+                    {errors.name}
+                  </motion.p>
+                )}
               </motion.div>
 
               <motion.div
@@ -126,7 +180,8 @@ export default function RegisterPage() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.6 }}
               >
-                <label htmlFor="email" className="block text-sm font-medium mb-2">
+                <label htmlFor="email" className="block text-sm font-medium mb-2 flex items-center">
+                  <span className="text-orange-500 mr-2">📧</span>
                   Email
                 </label>
                 <Input
@@ -134,10 +189,26 @@ export default function RegisterPage() {
                   type="email"
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value)
+                    if (errors.email) {
+                      setErrors({ ...errors, email: undefined })
+                    }
+                  }}
                   placeholder="Enter your email"
-                  className="focus:border-orange-500 focus:ring-orange-500"
+                  className={`focus:border-orange-500 focus:ring-orange-500 transition-all duration-200 ${
+                    errors.email ? "border-red-500" : ""
+                  }`}
                 />
+                {errors.email && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-500 text-xs mt-1"
+                  >
+                    {errors.email}
+                  </motion.p>
+                )}
               </motion.div>
 
               <motion.div
@@ -145,7 +216,8 @@ export default function RegisterPage() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.7 }}
               >
-                <label htmlFor="password" className="block text-sm font-medium mb-2">
+                <label htmlFor="password" className="block text-sm font-medium mb-2 flex items-center">
+                  <span className="text-orange-500 mr-2">🔒</span>
                   Password
                 </label>
                 <div className="relative">
@@ -154,9 +226,16 @@ export default function RegisterPage() {
                     type={showPassword ? "text" : "password"}
                     required
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={(e) => {
+                      setPassword(e.target.value)
+                      if (errors.password) {
+                        setErrors({ ...errors, password: undefined })
+                      }
+                    }}
                     placeholder="Create a password"
-                    className="focus:border-orange-500 focus:ring-orange-500"
+                    className={`focus:border-orange-500 focus:ring-orange-500 transition-all duration-200 ${
+                      errors.password ? "border-red-500" : ""
+                    }`}
                   />
                   <Button
                     type="button"
@@ -168,6 +247,15 @@ export default function RegisterPage() {
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </Button>
                 </div>
+                {errors.password && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-500 text-xs mt-1"
+                  >
+                    {errors.password}
+                  </motion.p>
+                )}
               </motion.div>
 
               <motion.div
@@ -175,7 +263,8 @@ export default function RegisterPage() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.8 }}
               >
-                <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2 flex items-center">
+                  <span className="text-orange-500 mr-2">🔐</span>
                   Confirm Password
                 </label>
                 <Input
@@ -183,10 +272,26 @@ export default function RegisterPage() {
                   type="password"
                   required
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value)
+                    if (errors.confirmPassword) {
+                      setErrors({ ...errors, confirmPassword: undefined })
+                    }
+                  }}
                   placeholder="Confirm your password"
-                  className="focus:border-orange-500 focus:ring-orange-500"
+                  className={`focus:border-orange-500 focus:ring-orange-500 transition-all duration-200 ${
+                    errors.confirmPassword ? "border-red-500" : ""
+                  }`}
                 />
+                {errors.confirmPassword && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-red-500 text-xs mt-1"
+                  >
+                    {errors.confirmPassword}
+                  </motion.p>
+                )}
               </motion.div>
 
               <motion.div
