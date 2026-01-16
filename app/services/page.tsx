@@ -11,28 +11,28 @@ export default function ServicesPage() {
       title: "Premium Maintenance",
       description: "Comprehensive maintenance services to keep your vehicle running at peak performance.",
       features: ["Oil Changes", "Brake Service", "Engine Diagnostics", "Transmission Service"],
-      price: "Starting at ₹700",
+      price: "Starting at $199",
     },
     {
       icon: Zap,
       title: "Performance Tuning",
       description: "Unlock your vehicle's true potential with our expert performance enhancement services.",
       features: ["ECU Tuning", "Exhaust Systems", "Cold Air Intakes", "Suspension Upgrades"],
-      price: "Starting at ₹600",
+      price: "Starting at $599",
     },
     {
       icon: Shield,
       title: "Protection Services",
       description: "Advanced protection solutions to preserve your vehicle's appearance and value.",
       features: ["Paint Protection", "Ceramic Coating", "Window Tinting", "Interior Protection"],
-      price: "Starting at ₹5000",
+      price: "Starting at $399",
     },
     {
       icon: Sparkles,
       title: "Detailing & Care",
       description: "Meticulous detailing services that restore and maintain your vehicle's pristine condition.",
       features: ["Full Detail", "Paint Correction", "Interior Cleaning", "Leather Treatment"],
-      price: "Starting at ₹3000",
+      price: "Starting at $299",
     },
   ]
 
